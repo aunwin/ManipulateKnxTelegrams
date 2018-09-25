@@ -6,3 +6,8 @@ Changes of individual parameters within one database record must also be reflect
 
 Consistency check is required, since the database itself is purely designed - it holds redundant data.
 Besides the information encoded within the entire cemi, most properties are listed again seperately. This is done so that research with the data becomes more easy, allowing for quicker understanding and human readability.
+
+## Installation
+
+In your Python virtual environment use
+  > pip install -r requirements.txt
