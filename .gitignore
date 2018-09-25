@@ -1,0 +1,4 @@
+.idea/*
+
+# prevent configuration details from committing
+*config.py

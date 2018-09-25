@@ -1,0 +1,1 @@
+This directory contains database config files that are not part of the git repo.
