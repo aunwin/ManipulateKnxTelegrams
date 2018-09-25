@@ -1,4 +1,5 @@
 .idea/*
+venv/*
 
 # prevent configuration details from committing
 *config.py
