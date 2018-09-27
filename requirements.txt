@@ -1,2 +1,2 @@
--e git+https://github.com/FreakyBytes/BaosKnxParser.git@feed662de4620a8c2e197e48bc84cdb7098e482f#egg=BaosKnxParser
+-e git+git@github.com:aunwin/BaosKnxParser.git#egg=BaosKnxParser
 mysql-connector==2.1.6
