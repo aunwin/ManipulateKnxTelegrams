@@ -6,7 +6,9 @@ from config import dbconfig
 import binascii
 
 import baos_knx_parser as knx
+import update_cemi
 
+#todo allow validation as function
 
 connection, cursor = db.init_db_connections(dbconfig)
 
@@ -22,8 +24,9 @@ for row in cursor:
         dbTelegram.properties[dbItem] = row[i]
         i += 1
 
-    for dbItem in dbTelegram.properties:
-        print(str(dbItem) + ": " + str(dbTelegram.properties[dbItem]))
+    #todo debug output
+    #for dbItem in dbTelegram.properties:
+    #    print(str(dbItem) + ": " + str(dbTelegram.properties[dbItem]))
 
     parsedTelegram = knx.parse_knx_telegram(binascii.a2b_hex(dbTelegram.properties['cemi']))
 
@@ -82,5 +85,9 @@ for row in cursor:
 
 if telegram_diviations:
     print(f'WARNING: This set of telegrams contains {telegram_diviations} invalid telegrams!')
+
+
+new_cemi = update_cemi.set_hop_count(5, dbTelegram.properties['cemi'])
+dbTelegram.properties['cemi'] = new_cemi
 
 db.close_db_connection(connection, cursor)

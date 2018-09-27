@@ -14,10 +14,11 @@ def init_db_connections(db_config):
                                              raise_on_warnings = db_config.knx_log_db['raise_on_warnings'])
         cursor = connection.cursor()
 
+        # todo debug output
         # get version of database
         cursor.execute("SELECT VERSION()")
         db_version = cursor.fetchone()
-        print(f'DB version: {db_version}')
+        #print(f'DB version: {db_version}')
 
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
