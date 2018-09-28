@@ -1,6 +1,32 @@
 import mysql.connector
 
 
+def update_db(db_config, cursor, primary_key_value, telegram_property, value):
+    """
+    Function to update database-entry with new value for given property
+
+    :param db_config: configuration-file for database
+    :param cursor: cursor to work on active connection
+    :param primary_key_value: value of primary_key to find correct line to update
+    :param telegram_property: property which gets updated
+    :param value: new value for given property
+    :return: returns 0 if success, else an exception is raised
+    """
+    primary_key = get_primary_key_of_table(db_config, cursor)
+    table = db_config['table']
+
+    stmt = f'UPDATE {table} SET {telegram_property} = {value} WHERE {primary_key} = {primary_key_value}'
+    print(stmt)
+    try:
+        cursor.execute(stmt)
+
+    except mysql.connector.Error as err:
+        print(f'Error while updating database: {err}')
+        raise Exception('Error while updating database: %s', err)
+
+    return 0
+
+
 def get_primary_key_of_table(db_config, cursor):
     table = db_config['table']
 
@@ -24,6 +50,6 @@ def get_primary_key_of_table(db_config, cursor):
 
         primary_key = result[0]
     except mysql.connector.Error as err:
-        print(f'Error in get_primary_key_of_table:{err}')
+        print(f'Error in get_primary_key_of_table: {err}')
 
     return primary_key
