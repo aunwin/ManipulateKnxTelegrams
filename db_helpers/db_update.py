@@ -10,7 +10,6 @@ def update_db(db_config, cursor, primary_key_value, telegram_property, value):
     :param primary_key_value: value of primary_key to find correct line to update
     :param telegram_property: property which gets updated
     :param value: new value for given property
-    :return: returns 0 if success, else an exception is raised
     """
     primary_key = get_primary_key_of_table(db_config, cursor)
     table = db_config['table']
@@ -23,8 +22,6 @@ def update_db(db_config, cursor, primary_key_value, telegram_property, value):
     except mysql.connector.Error as err:
         print(f'Error while updating database: {err}')
         raise Exception('Error while updating database: %s', err)
-
-    return 0
 
 
 def get_primary_key_of_table(db_config, cursor):
