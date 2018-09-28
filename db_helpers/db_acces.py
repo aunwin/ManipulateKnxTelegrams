@@ -1,5 +1,4 @@
 import mysql.connector
-from mysql.connector import errorcode
 
 
 def init_db_connections(db_config):
@@ -18,7 +17,7 @@ def init_db_connections(db_config):
         # get version of database
         cursor.execute("SELECT VERSION()")
         db_version = cursor.fetchone()
-        #print(f'DB version: {db_version}')
+        # print(f'DB version: {db_version}')
 
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
