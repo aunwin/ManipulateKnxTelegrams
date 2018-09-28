@@ -33,48 +33,57 @@ def telegram_consistence_check(dbconfig, cursor):
         propertie_deviations = 0
 
         if dbTelegram.properties["source_addr"] != str(parsedTelegram.src):
-            print(f'Error in src-Property: dbValue: {dbTelegram.properties["source_addr"]} - '
-                  f'parsedValue: {parsedTelegram.src}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'src-Property: dbValue = {dbTelegram.properties["source_addr"]} - '
+                  f'parsedValue = {parsedTelegram.src}')
             propertie_deviations += 1
 
         if dbTelegram.properties["destination_addr"] != str(parsedTelegram.dest):
-            print(f'Error in dest-Property: dbValue: {dbTelegram.properties["destination_addr"]} - '
-                  f'parsedValue: {parsedTelegram.dest}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'dest-Property: dbValue = {dbTelegram.properties["destination_addr"]} - '
+                  f'parsedValue = {parsedTelegram.dest}')
             propertie_deviations += 1
 
         if dbTelegram.properties["apci"] != str(parsedTelegram.apci):
-            print(f'Error in apci-Property: dbValue: {dbTelegram.properties["apci"]} - '
-                  f'parsedValue: {parsedTelegram.apci}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'apci-Property: dbValue = {dbTelegram.properties["apci"]} - '
+                  f'parsedValue = {parsedTelegram.apci}')
             propertie_deviations += 1
 
         if dbTelegram.properties["tpci"] != str(parsedTelegram.tpci):
-            print(f'Error in tpci-Property: dbValue: {dbTelegram.properties["tpci"]} - '
-                  f'parsedValue: {parsedTelegram.tpci}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'tpci-Property: dbValue = {dbTelegram.properties["tpci"]} - '
+                  f'parsedValue = {parsedTelegram.tpci}')
             propertie_deviations += 1
 
         if dbTelegram.properties["priority"] != str(parsedTelegram.priority):
-            print(f'Error in priority-Property: dbValue: {dbTelegram.properties["priority"]} - '
-                  f'parsedValue: {parsedTelegram.priority}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'priority-Property: dbValue = {dbTelegram.properties["priority"]} - '
+                  f'parsedValue = {parsedTelegram.priority}')
             propertie_deviations += 1
 
         if dbTelegram.properties["repeated"] != parsedTelegram.repeat:
-            print(f'Error in repeated-Property: dbValue: {dbTelegram.properties["repeated"]} - '
-                  f'parsedValue: {parsedTelegram.repeat}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'repeated-Property: dbValue = {dbTelegram.properties["repeated"]} - '
+                  f'parsedValue = {parsedTelegram.repeat}')
             propertie_deviations += 1
 
         if dbTelegram.properties["hop_count"] != parsedTelegram.hop_count:
-            print(f'Error in hop_count-Property: dbValue: {dbTelegram.properties["hop_count"]} - '
-                  f'parsedValue: {parsedTelegram.hop_count}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'hop_count-Property: dbValue = {dbTelegram.properties["hop_count"]} - '
+                  f'parsedValue = {parsedTelegram.hop_count}')
             propertie_deviations += 1
 
         if binascii.a2b_hex(dbTelegram.properties["apdu"]) != parsedTelegram.payload:
-            print(f'Error in apdu-Property: dbValue: {dbTelegram.properties["apdu"]} - '
-                  f'parsedValue: {parsedTelegram.payload}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'apdu-Property: dbValue = {dbTelegram.properties["apdu"]} - '
+                  f'parsedValue = {parsedTelegram.payload}')
             propertie_deviations += 1
 
         if dbTelegram.properties["payload_length"] != parsedTelegram.payload_length:
-            print(f'Error in payload_length-Property: dbValue: {dbTelegram.properties["payload_length"]} - '
-                  f'parsedValue: {parsedTelegram.payload_length}')
+            print(f'DEBUG: In Telegram with Sequence_Number = {dbTelegram.properties["sequence_number"]} '
+                  f'payload_length-Property: dbValue = {dbTelegram.properties["payload_length"]} - '
+                  f'parsedValue = {parsedTelegram.payload_length}')
             propertie_deviations += 1
 
         if propertie_deviations:
