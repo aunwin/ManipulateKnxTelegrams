@@ -1,22 +1,24 @@
 #!/usr/bin/env python3
 
 from db_helpers import db_acces as db
-from db_helpers import knxTelegram as dbKnxTelegram
+from db_helpers import knxTelegram as telegram
+from db_helpers import db_update
+from db_helpers import db_get_telegram
 from config import dbconfig
 import binascii
 import baos_knx_parser as knx
-import update_cemi
+import recalculate_cemi
 
 
 def telegram_consistence_check(dbconfig, cursor):
     # todo turn statement into more generall statement (Filter)
-    sql_statement = f'SELECT * FROM {dbconfig["table"]};'
+    sql_statement = f'SELECT * FROM {dbconfig["table"]} LIMIT 1;'
 
     cursor.execute(sql_statement)
 
     inconsitent_sequence_numbers = []
     for row in cursor:
-        dbTelegram = dbKnxTelegram.KnxTelegram
+        dbTelegram = telegram.KnxTelegram
         i = 0
         for dbItem in dbTelegram.properties:
             dbTelegram.properties[dbItem] = row[i]
@@ -86,10 +88,31 @@ def telegram_consistence_check(dbconfig, cursor):
 
     return inconsitent_sequence_numbers
 
-connection, cursor = db.init_db_connections(dbconfig.knx_attacks_log_db)
-inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
-print(len(inconsitent_telegrams))
-#new_cemi = update_cemi.set_hop_count(5, dbTelegram.properties['cemi'])
-#dbTelegram.properties['cemi'] = new_cemi
 
+# Setup
+connection, cursor = db.init_db_connections(dbconfig.knx_attacks_log_db)
+
+# Check and adapt db entries
+# inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
+#
+# for seq_nbr in inconsitent_telegrams:
+#     telegram = get_db_telegram(dbconfig.knx_attacks_log_db, cursor, seq_nbr)[0] # select first entry of result set
+#     # todo clean this up - just writing all hop-count and src-address mistakes for now befor holiday break
+#     new_cemi_value = recalculate_cemi.set_hop_count(telegram.properties['hop_count'], telegram.properties['cemi'])
+#     new_cemi_value = recalculate_cemi.set_src_address(telegram.properties['source_addr'], new_cemi_value)
+#     db_update.update_db(dbconfig.knx_attacks_log_db, cursor, seq_nbr, 'cemi', new_cemi_value)
+#
+#
+# inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
+# if inconsitent_telegrams > 0:
+#     raise AssertionError('Still inconsistent db after updating')
+
+# Temporary experiment
+telegram = get_db_telegram(dbconfig.knx_attacks_log_db, cursor, 1)[0] # select first entry of result set
+old_cemi_value = telegram.properties['cemi']
+src_address_property = telegram.properties['source_addr']
+new_cemi_value = recalculate_cemi.set_src_address(src_address_property, old_cemi_value)
+db_update.update_db(dbconfig.knx_attacks_log_db, cursor, 1, 'cemi', new_cemi_value)
+
+# Teardown
 db.close_db_connection(connection, cursor)
