@@ -10,7 +10,7 @@ import update_cemi
 
 def telegram_consistence_check(dbconfig, cursor):
     # todo turn statement into more generall statement (Filter)
-    sql_statement = f'SELECT * FROM {dbconfig.knx_log_db["table"]};'
+    sql_statement = f'SELECT * FROM {dbconfig["table"]};'
 
     cursor.execute(sql_statement)
 
@@ -86,8 +86,8 @@ def telegram_consistence_check(dbconfig, cursor):
 
     return inconsitent_sequence_numbers
 
-connection, cursor = db.init_db_connections(dbconfig)
-inconsitent_telegrams = telegram_consistence_check(dbconfig, cursor)
+connection, cursor = db.init_db_connections(dbconfig.knx_attacks_log_db)
+inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
 print(len(inconsitent_telegrams))
 #new_cemi = update_cemi.set_hop_count(5, dbTelegram.properties['cemi'])
 #dbTelegram.properties['cemi'] = new_cemi

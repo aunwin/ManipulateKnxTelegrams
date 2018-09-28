@@ -1,4 +1,5 @@
 import mysql.connector
+from mysql.connector import errorcode
 
 
 def init_db_connections(db_config):
@@ -6,11 +7,11 @@ def init_db_connections(db_config):
     cursor = None
 
     try:
-        connection = mysql.connector.connect(host = db_config.knx_log_db['host'],
-                                             user = db_config.knx_log_db['user'],
-                                             password = db_config.knx_log_db['passwd'],
-                                             db = db_config.knx_log_db['db'],
-                                             raise_on_warnings = db_config.knx_log_db['raise_on_warnings'])
+        connection = mysql.connector.connect(host = db_config['host'],
+                                             user = db_config['user'],
+                                             password = db_config['passwd'],
+                                             db = db_config['db'],
+                                             raise_on_warnings = db_config['raise_on_warnings'])
         cursor = connection.cursor()
 
         # todo debug output
