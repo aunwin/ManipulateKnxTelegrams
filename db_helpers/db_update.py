@@ -1,7 +1,7 @@
 import mysql.connector
 
 
-def update_db(db_config, cursor, primary_key_value, telegram_property, value):
+def update_db(db_config, connection, cursor, primary_key_value, telegram_property, value):
     """
     Function to update database-entry with new value for given property
 
@@ -14,10 +14,11 @@ def update_db(db_config, cursor, primary_key_value, telegram_property, value):
     primary_key = get_primary_key_of_table(db_config, cursor)
     table = db_config['table']
 
-    stmt = f'UPDATE {table} SET {telegram_property} = {value} WHERE {primary_key} = {primary_key_value}'
+    stmt = f'UPDATE {table} SET {telegram_property} = "{value}" WHERE {primary_key} = {primary_key_value}'
     print(stmt)
     try:
         cursor.execute(stmt)
+        connection.commit()
 
     except mysql.connector.Error as err:
         print(f'Error while updating database: {err}')
