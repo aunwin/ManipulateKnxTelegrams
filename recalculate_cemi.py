@@ -18,6 +18,25 @@ def set_hop_count(value, cemi):
 
     return cemi
 
+#todo WIP - do not use this function
+def set_src_address(value, cemi):
+    #todo validation check for value missing
+    #if value > 7 | value < 0:
+    #    raise OverflowError('No hopecount smaler than 0 or larger than 7 allowed!')
+    print(value)
+    src_address_bytes = value
+
+    additional_length = parse_length_of_additional_info(cemi)
+    position = 8 + additional_length * 2    # 2 Nipple pro additional Byte
+
+    mutable_cemi = bytearray(cemi)
+    print(mutable_cemi[position:position+4])
+
+    #cemi = replace_nipple(position, src_address_bytes, cemi)
+
+    raise NotImplementedError
+    return cemi
+
 def get_destintation_address_flag(cemi):
     parsed_telegram = knx.parse_knx_telegram(binascii.a2b_hex(cemi))
     return parsed_telegram.dest.is_group_address()
