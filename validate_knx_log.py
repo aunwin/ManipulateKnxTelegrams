@@ -99,11 +99,14 @@ def telegram_consistence_check(dbconfig, cursor):
 
 
 # Setup
-connection, cursor = db.init_db_connections(dbconfig.knx_attacks_log_db)
+#connection, cursor = db.init_db_connections(dbconfig.knx_attacks_log_db)
+connection, cursor = db.init_db_connections(dbconfig.benchmark_attacks_log1_db)
+
 
 
 # Check and adapt db entries
-inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
+#inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
+inconsitent_telegrams = telegram_consistence_check(dbconfig.benchmark_attacks_log1_db, cursor)
 
 for seq_nbr in inconsitent_telegrams:
     telegram = db_get_telegram.get_db_telegram(dbconfig.knx_attacks_log_db, cursor, seq_nbr)[0] # select first entry of result set
