@@ -94,6 +94,8 @@ def telegram_consistence_check(dbconfig, cursor):
 
     if len(inconsitent_sequence_numbers) > 0:
         print(f'WARNING: This set of telegrams contains {len(inconsitent_sequence_numbers)} invalid telegrams!')
+    else:
+        print(f'Debuginfo: This set of telegrams contains {len(inconsitent_sequence_numbers)} invalid telegrams.')
 
     return inconsitent_sequence_numbers
 
@@ -119,6 +121,8 @@ for seq_nbr in inconsitent_telegrams:
 inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
 if len(inconsitent_telegrams) > 0:
     raise AssertionError('Still inconsistent db after updating')
+else:
+    print(f'Debuginfo: There were {len(inconsitent_sequence_numbers)} inconsistent telegrams found.')
 
 # Teardown
 db.close_db_connection(connection, cursor)
