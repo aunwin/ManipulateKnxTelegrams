@@ -9,6 +9,8 @@ import binascii
 import baos_knx_parser as knx
 import recalculate_cemi
 
+# select database name
+CONST_TABLE_NAME = dbconfig.tmp_verification
 
 def telegram_consistence_check(dbconfig, cursor):
     # todo turn statement into more generall statement (Filter)
@@ -101,24 +103,20 @@ def telegram_consistence_check(dbconfig, cursor):
 
 
 # Setup
-#connection, cursor = db.init_db_connections(dbconfig.knx_attacks_log_db)
-connection, cursor = db.init_db_connections(dbconfig.benchmark_attacks_log1_db)
-
-
+connection, cursor = db.init_db_connections(CONST_TABLE_NAME)
 
 # Check and adapt db entries
-#inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
-inconsitent_telegrams = telegram_consistence_check(dbconfig.benchmark_attacks_log1_db, cursor)
+inconsitent_telegrams = telegram_consistence_check(CONST_TABLE_NAME, cursor)
 
 for seq_nbr in inconsitent_telegrams:
-    telegram = db_get_telegram.get_db_telegram(dbconfig.knx_attacks_log_db, cursor, seq_nbr)[0] # select first entry of result set
+    telegram = db_get_telegram.get_db_telegram(CONST_TABLE_NAME, cursor, seq_nbr)[0] # select first entry of result set
     # todo clean this up - just writing all hop-count and src-address mistakes for now befor holiday break
     new_cemi_value = recalculate_cemi.set_hop_count(telegram.properties['hop_count'], telegram.properties['cemi'])
     new_cemi_value = recalculate_cemi.set_src_address(telegram.properties['source_addr'], new_cemi_value)
-    db_update.update_db(dbconfig.knx_attacks_log_db, connection, cursor, seq_nbr, 'cemi',
+    db_update.update_db(CONST_TABLE_NAME, connection, cursor, seq_nbr, 'cemi',
                         new_cemi_value.decode('utf-8'))
 
-inconsitent_telegrams = telegram_consistence_check(dbconfig.knx_attacks_log_db, cursor)
+inconsitent_telegrams = telegram_consistence_check(CONST_TABLE_NAME, cursor)
 if len(inconsitent_telegrams) > 0:
     raise AssertionError('Still inconsistent db after updating')
 else:
